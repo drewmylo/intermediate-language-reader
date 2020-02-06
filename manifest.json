@@ -1,10 +1,9 @@
 {
-  "name": "Getting Started Example",
+  "name": "Intermediate Vocabulary Collector",
   "version": "1.0",
-  "options_page": "options.html",
-
-  "description": "Build an Extension!",
+  "description": "Helps to grow your vocabulary.",
   "permissions": ["activeTab", "declarativeContent", "storage"],
+  "options_page": "options.html",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
