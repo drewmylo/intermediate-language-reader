@@ -113,9 +113,11 @@ getNewVocab.onclick = function (element) {
    
       <input type="button" id="left" value="<" />
       <input type="button" id="right" value=">" />
+      <input type="button" id="submit" value="Submit" />
+
       </body>
 
-       </div> </div>\`; document.getElementById("gc-pagecontent").appendChild(block_to_insert);
+       </div> </div>\`; document.body.appendChild(block_to_insert);
       // When the user clicks on <span> (x), close the modal
       var span = document.getElementsByClassName("close")[0];
 
@@ -125,6 +127,7 @@ getNewVocab.onclick = function (element) {
     
     var right = document.getElementById("right");
     var left = document.getElementById("left");
+    var submit = document.getElementById("submit");
 
     var firstList = document.getElementById("sbOne");
     var secondList = document.getElementById("sbTwo");
@@ -142,6 +145,21 @@ getNewVocab.onclick = function (element) {
     left.onclick = function() {
       moveItems(secondList, firstList);
     }
+
+    submit.onclick = function() {
+      modal.style.display = "none";
+
+      let chosenVocab = firstList.children;
+
+      for (let index = 0; index < chosenVocab.length; index++) {
+
+        let wordToHighlight = chosenVocab[index].text;
+        console.log(wordToHighlight);
+        
+        while(window.find(wordToHighlight)) 
+        {window.getSelection().getRangeAt(0).surroundContents(document.createElement("MARK"));} 
+      }
+    }
    
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -153,6 +171,8 @@ window.onclick = function(event) {
     open_modal();
   });
 };
+
+
 
 /*if (window.confirm(`Do you want to add ${element} to your dictionary?`)) {
   addedWords.push(element);
