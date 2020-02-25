@@ -156,8 +156,11 @@ getNewVocab.onclick = function (element) {
         let wordToHighlight = chosenVocab[index].text;
         console.log(wordToHighlight);
         
-        while(window.find(wordToHighlight)) 
-        {window.getSelection().getRangeAt(0).surroundContents(document.createElement("MARK"));} 
+        while(window.find(wordToHighlight)){
+          window.getSelection().getRangeAt(0).surroundContents(document.createElement("MARK"));
+        }
+        window.getSelection().removeAllRanges();
+        
       }
     }
    
