@@ -64,11 +64,11 @@ function close_modal() {
 }
 
 getNewVocab.onclick = function () {
-  chrome.storage.local.get(knownWords, function (result) {
-    if (!result) {
-      result = {};
+  chrome.storage.local.get("vocabulary", function (vocabulary) {
+    if (!vocabulary) {
+      vocabulary = {};
     }
-    knownWords = Object.keys(result);
+    knownWords = Object.keys(vocabulary);
 
     chrome.tabs.executeScript({
       code: "window.getSelection().toString();"
@@ -107,7 +107,7 @@ getNewVocab.onclick = function () {
         code: `var block_to_insert;
         block_to_insert = document.createElement('div');
         block_to_insert.innerHTML =
-        \`<!-- The Modal --> <div id="myModal" class="modal"> <!-- Modal content --> <div class="modal-content"> <span class="close">&times;</span> <body>
+        \`<!-- The Modal --> <div id="myModal" class="modal"> <!-- Modal content --> <div class="modal-content"> <span class="close" id="span">&times;</span> <body>
         <h2>Move Items From One List to Another</h2>
         <select id="sbOne" multiple="multiple">
         ${htmlOptions}
@@ -115,6 +115,8 @@ getNewVocab.onclick = function () {
      
         <select id="sbTwo" multiple="multiple">
         </select>
+
+        
      
         <br />
      
@@ -127,14 +129,16 @@ getNewVocab.onclick = function () {
          </div> </div>\`; document.body.appendChild(block_to_insert);
         // When the user clicks on <span> (x), close the modal
         var span = document.getElementsByClassName("close")[0];
-  
         span.onclick = function() {
         modal.style.display = "none";
         }
+  
+
       
       var right = document.getElementById("right");
       var left = document.getElementById("left");
       var submit = document.getElementById("submit");
+      var modal = document.getElementById("myModal");
   
       var firstList = document.getElementById("sbOne");
       var secondList = document.getElementById("sbTwo");
@@ -152,57 +156,40 @@ getNewVocab.onclick = function () {
       left.onclick = function() {
         moveItems(secondList, firstList);
       }
-  
-      submit.onclick = function() {
-        modal.style.display = "none";
-        let knownWords = {};
-        chrome.storage.local.get(knownWords, function (result) {
-          if (!result) {
-            result = {};
-          }
-      
 
-      
-  
-        let chosenVocab = firstList.children;
-  
-        for (let index = 0; index < chosenVocab.length; index++) {
-  
-          let wordToHighlight = chosenVocab[index].text;
-          console.log(wordToHighlight);
-          knownWords[wordToHighlight] = '';
-          while(window.find(wordToHighlight)){
-            try{
-            window.getSelection().getRangeAt(0).surroundContents(document.createElement("MARK"));
+      `}, function () {
+        open_modal();
+        chrome.tabs.executeScript({
+          code: `      
+        submit.onclick = function() {
+          var editorExtensionId = "abcdefghijklmnoabcdefhijklmnoabc";
+          modal.style.display = "none";
+          let wordsToAdd = {};
+          wordsToAdd.vocabulary = {};
+          let chosenVocab = firstList.children;
+          for (let index = 0; index < chosenVocab.length; index++) {
+            let wordToHighlight = chosenVocab[index].text;
+            wordsToAdd.vocabulary[wordToHighlight] = '';
+            while(window.find(wordToHighlight)){
+              try{
+              window.getSelection().getRangeAt(0).surroundContents(document.createElement("MARK"));
+              console.log(wordToHighlight);
+              }
+              catch(err){
+                continue;
+              }
             }
-            catch(err){
-              continue;
-            }
+            window.getSelection().removeAllRanges();
           }
-          window.getSelection().removeAllRanges();
+          chrome.runtime.sendMessage({"vocabulary": wordsToAdd});
+          console.log(wordsToAdd);
           
-        }
-          chrome.storage.local.set(knownWords);
-          console.log(knownWords);
-        
-      });}
-    
-     
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }`
+        }`});
+
       });
-      open_modal();
     });
-
   });
-
-
-
-};
+}
 
 
 

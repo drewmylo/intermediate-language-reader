@@ -3,6 +3,9 @@
   "version": "1.0",
   "description": "Helps to grow your vocabulary.",
   "permissions": ["activeTab", "declarativeContent", "storage"],
+  "externally_connectable": {
+    "matches": ["*://*.chrome.com/*"]
+  },
   "options_page": "options.html",
   "background": {
     "scripts": ["background.js"],

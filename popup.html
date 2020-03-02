@@ -10,6 +10,25 @@
     </style>
   </head>
   <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" id="span">&times;</span>
+        <body>
+          <h2>Move Items From One List to Another</h2>
+          <select id="sbOne" multiple="multiple"> </select>
+
+          <select id="sbTwo" multiple="multiple"> </select>
+
+          <br />
+
+          <input type="button" id="left" value="<" />
+          <input type="button" id="right" value=">" />
+          <input type="button" id="submit" value="Submit" />
+        </body>
+      </div>
+    </div>
     <button id="getNewVocab"></button>
     <script src="popup.js"></script>
   </body>
