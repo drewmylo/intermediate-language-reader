@@ -48,6 +48,8 @@ let uncommonWords = [];
 let knownWords = {};
 
 
+
+
 function open_modal() {
   //block
   chrome.tabs.executeScript({
@@ -68,7 +70,8 @@ getNewVocab.onclick = function () {
     if (!vocabulary) {
       vocabulary = {};
     }
-    knownWords = Object.keys(vocabulary);
+    knownWords = Object.keys(vocabulary.vocabulary);
+    console.log(knownWords);
 
     chrome.tabs.executeScript({
       code: "window.getSelection().toString();"
@@ -162,14 +165,13 @@ getNewVocab.onclick = function () {
         chrome.tabs.executeScript({
           code: `      
         submit.onclick = function() {
-          var editorExtensionId = "abcdefghijklmnoabcdefhijklmnoabc";
+          var editorExtensionId = "nbenpalhcdohiaaklmeifolbjbjlcjoe";
           modal.style.display = "none";
           let wordsToAdd = {};
-          wordsToAdd.vocabulary = {};
           let chosenVocab = firstList.children;
           for (let index = 0; index < chosenVocab.length; index++) {
             let wordToHighlight = chosenVocab[index].text;
-            wordsToAdd.vocabulary[wordToHighlight] = '';
+            wordsToAdd[wordToHighlight] = '';
             while(window.find(wordToHighlight)){
               try{
               window.getSelection().getRangeAt(0).surroundContents(document.createElement("MARK"));
@@ -181,9 +183,7 @@ getNewVocab.onclick = function () {
             }
             window.getSelection().removeAllRanges();
           }
-          chrome.runtime.sendMessage({"vocabulary": wordsToAdd});
-          console.log(wordsToAdd);
-          
+          chrome.runtime.sendMessage(editorExtensionId, {"vocabulary": wordsToAdd});          
         }`});
 
       });

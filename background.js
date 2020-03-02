@@ -6,6 +6,7 @@
 
 chrome.runtime.onMessage.addListener(
   function (request) {
+    console.log(request);
     if (request.vocabulary) {
       chrome.storage.local.set({ "vocabulary": request.vocabulary }, function () {
         console.log(request.vocabulary);
